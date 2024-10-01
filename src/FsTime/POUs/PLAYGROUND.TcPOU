@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="PLAYGROUND" Id="{9f655818-b572-44c0-a989-79232a60a1fe}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'direct call for this program is not allowed'} 
+PROGRAM INTERNAL PLAYGROUND
+VAR
+	bStart,
+	bStop,
+	bPause,
+	bClear 			: BOOL;
+	eKind			: E_TimeInstanceKind := E_TimeInstanceKind.Local;
+	nValue 			: ULINT;
+	tValue,
+	tValue2			: LTIME	;
+	tSetpoint 		: LTIME := LTIME#10S;
+	dTimestamp 		: DATE;
+	dtTimestamp 	: DT;
+	tdTimestamp 	: TOD;
+	eDay 			: E_DayOfWeek;
+	eMonth 			: E_Month;
+	Count 			: FsCommon.T_Size;
+	fbIntervalTimer : FB_IntervalTimer;
+	fbStopwatch 	: FB_Stopwatch;
+	fbTimer 		: FB_Timer;
+	fbTimestamp 	: FB_TimeInstance;
+	fbTimeSpan		: FB_TimeSpan;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Example1();
+nValue := fbTimeSpan.FromTime(LTIME#100D2H30M40S500MS600US700NS).ToMinutes();
+(*
+fbTimestamp.Now(Error => );
+
+CASE eKind OF
+	E_TimeInstanceKind.UTC:
+		fbTimestamp.ToUTC(Error =>);
+		
+	E_TimeInstanceKind.Local:
+		fbTimestamp.ToLocal(Error =>);
+	END_CASE
+	
+dTimestamp	:= fbTimestamp.ToDate();
+dtTimestamp := fbTimestamp.ToDateTime();
+tdTimestamp := fbTimestamp.ToTimeOfDay();
+eDay 		:= fbTimestamp.DayOfWeek;
+eMonth 		:= fbTimestamp.Month;
+*)
+(*
+
+*)
+(*
+IF FsCommon.F_ResetOnTrue(bStart) THEN fbTimer.Start(); END_IF
+IF FsCommon.F_ResetOnTrue(bStop)  THEN fbTimer.Stop(); 	END_IF
+IF FsCommon.F_ResetOnTrue(bPause) THEN fbTimer.Pause(); END_IF
+IF FsCommon.F_ResetOnTrue(bClear) THEN fbTimer.Clear(); END_IF
+
+fbTimer.Duration := tSetpoint;
+tValue	:= fbTimer.ElapsedTime;
+tValue2 := fbTimer.TimeRemaining;
+*)
+(*
+fbIntervalTimer.IntervalTime := LTIME#10S;
+
+tValue := 
+	fbIntervalTimer
+		.SetCallback(0)
+		.Start()
+		.Run()
+		.ElapsedTime;
+		
+Count := fbIntervalTimer.IntervalCount;
+*)]]></ST>
+    </Implementation>
+    <Method Name="Example1" Id="{c6ce03c6-6ff4-0772-1890-7cb97cd81919}">
+      <Declaration><![CDATA[METHOD Example1
+VAR_STAT
+	sValue 			: Tc2_System.T_MaxString;
+	dtTimestamp		: DT;
+	fbTimestamp 	: FB_TimeInstance;
+	bCreate			: BOOL := TRUE;
+	Err             : FsError.T_Error;
+    fbWithAdsLogger : FsError.FB_AdsErrorLogger;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FsCommon.F_ResetOnTrue(bCreate) THEN
+	dtTimestamp := fbTimestamp.Now(Error => Err).ToLocal().ToDateTime();
+	
+	IF Err.IsRaised THEN Err.LogMessage(fbWithAdsLogger); RETURN; END_IF
+	
+	sValue := '';
+	sValue := Tc2_Standard.CONCAT('Today is ', TO_STRING(fbTimestamp.DayOfWeek));
+	sValue := Tc2_Standard.CONCAT(sValue, ', ');
+	sValue := Tc2_Standard.CONCAT(sValue, TO_STRING(fbTimestamp.DayOfMonth));
+	sValue := Tc2_Standard.CONCAT(sValue, ' ');
+	sValue := Tc2_Standard.CONCAT(sValue, TO_STRING(fbTimestamp.Month));
+	sValue := Tc2_Standard.CONCAT(sValue, ' ');
+	sValue := Tc2_Standard.CONCAT(sValue, TO_STRING(fbTimestamp.Year));
+	sValue := Tc2_Standard.CONCAT(sValue, '.');
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

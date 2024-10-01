@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Year" Id="{4c85ceef-45f0-076c-2555-da3b6a070ea4}">
+    <Declaration><![CDATA[// Represents the year as a four-digit value (e.g., 2024).
+TYPE T_Year : UINT; END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

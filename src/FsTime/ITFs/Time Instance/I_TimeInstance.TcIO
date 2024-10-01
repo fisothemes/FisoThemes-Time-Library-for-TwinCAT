@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeInstance" Id="{26c7d857-2243-0abe-26ca-2423d058552e}">
+    <Declaration><![CDATA[// Interface for a time instance.
+INTERFACE I_TimeInstance EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Property Name="DayOfMonth" Id="{749c7cdb-4fdb-09b6-0207-3568f68a8843}">
+      <Declaration><![CDATA[// The day of the month extracted from the time instance.
+// [get] Returns the day component of the date, with a value ranging from 1 to 31.
+PROPERTY DayOfMonth : T_DayOfMonth]]></Declaration>
+      <Get Name="Get" Id="{675c4c6e-5a00-02ac-3cd6-6b6f8a10904d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="DayOfWeek" Id="{e421d028-50b3-09ca-313a-ef4335ca1dfb}">
+      <Declaration><![CDATA[// The day of the week extracted from the time instance.
+// [get] Returns the day as an `E_DayOfWeek` enum or value ranging from 1 (Monday) to 7 (Sunday).
+PROPERTY DayOfWeek : E_DayOfWeek]]></Declaration>
+      <Get Name="Get" Id="{27089952-41ac-05a7-10b2-046efe61d5e0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="DayOfYear" Id="{a756671a-bca5-0bca-313e-b96bedccfbb4}">
+      <Declaration><![CDATA[// The day of the year extracted from the time instance.
+// [get] Returns the day of the year, with a value ranging from 1 to 366.
+PROPERTY DayOfYear : T_DayOfYear]]></Declaration>
+      <Get Name="Get" Id="{cdc78b97-ffbb-0bc2-1bc7-b0f1049c5a08}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="EpochMilliseconds" Id="{b6b270b2-8e98-0ac1-343c-3ac45c147965}">
+      <Declaration><![CDATA[// The time instance value represented as the number of milliseconds since
+// Thursday, 1.1.1970 00:00:00.000 (Unix epoch).
+// [get] Returns the time instance value in milliseconds.
+PROPERTY EpochMilliseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{acc0b631-fbd7-0fe1-0fae-035ec6322652}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Hour" Id="{a1e0b613-8af4-0f40-2ee5-4176b3304d91}">
+      <Declaration><![CDATA[// The hour of the day extracted from the time instance.
+// [get] Returns the hour component of the time, with a value ranging from 0 to 23.
+PROPERTY Hour : T_Hour]]></Declaration>
+      <Get Name="Get" Id="{a7c04626-de16-0e3c-053b-8a5d5aa43579}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="IsAfter" Id="{b3632e20-16be-0c59-3ec2-f097c95d6581}">
+      <Declaration><![CDATA[// Checks if the current time instance is after the specified time instance.
+METHOD IsAfter : BOOL // TRUE if the current time instance is after the specified one, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsBefore" Id="{00f08ba1-89b6-0159-0bc8-19eb16b1769a}">
+      <Declaration><![CDATA[// Checks if the current time instance is before the specified time instance.
+METHOD IsBefore : BOOL // TRUE if the current time instance is before the specified one, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsEqualTo" Id="{3d8ce283-ca9a-0a0f-2e42-47bdef4d9474}">
+      <Declaration><![CDATA[// Checks if the current time instance is equal to the specified time instance.
+METHOD IsEqualTo : BOOL // TRUE if the current time instance is equal to the specified, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Kind" Id="{ff6ab792-cfd6-0fd5-2237-1bd9e721729e}">
+      <Declaration><![CDATA[// Specifies whether the time instance is in UTC or local time format.
+// [get] Returns the time instance type enum as a value.
+PROPERTY Kind : E_TimeInstanceKind]]></Declaration>
+      <Get Name="Get" Id="{abfa180a-ed36-0179-385c-7357fa0a8cb2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Millisecond" Id="{df9c9d02-70d5-025e-1994-d91e8b5ed165}">
+      <Declaration><![CDATA[// The millisecond part of the second extracted from the time instance.
+// [get] Returns the millisecond component, with a value ranging from 0 to 999.
+PROPERTY Millisecond : T_Millisecond]]></Declaration>
+      <Get Name="Get" Id="{ea074c0c-3d8b-0383-2a0e-c8ed0d8b8b48}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Minute" Id="{6da761c0-dd98-0adf-1b55-fde53519a475}">
+      <Declaration><![CDATA[// The minute of the hour extracted from the time instance.
+// [get] Returns the minute component, with a value ranging from 0 to 59.
+PROPERTY Minute : T_Minute]]></Declaration>
+      <Get Name="Get" Id="{56a4bc11-62c6-0c5e-3e43-45e3991131d2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Month" Id="{749e595a-8434-090d-1f5f-f29dd0975c88}">
+      <Declaration><![CDATA[// The month of the year extracted from the time instance.
+// [get] Returns the month as an `E_Month` enum or a value ranging from 1 to 12 value.
+PROPERTY Month : E_Month]]></Declaration>
+      <Get Name="Get" Id="{143eb35f-05b6-04f2-34f6-81bbcbcee9f0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Second" Id="{bc96bb1a-eb11-0c16-15dc-47b78dfed306}">
+      <Declaration><![CDATA[// The second of the minute extracted from the time instance.
+// [get] Returns the second component, with a value ranging from 0 to 59.
+PROPERTY Second : T_Second]]></Declaration>
+      <Get Name="Get" Id="{67ed41c0-21bc-0181-0cc4-8887ad0faf3b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="ToDate" Id="{a9f6e095-d9c5-099b-088e-54d7c2897fa7}">
+      <Declaration><![CDATA[// Converts the time instance to a date value.
+METHOD ToDate : DATE // The date part of the time instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToDateTime" Id="{a183f1c3-75d8-034d-18da-e08248d7fc40}">
+      <Declaration><![CDATA[// Converts the time instance to a combined date and time value.
+METHOD ToDateTime : DT // The combined date and time value as a DT (Date and Time).
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToLocal" Id="{37a79fa7-82e8-0069-1283-7afb4077c0a2}">
+      <Declaration><![CDATA[// Converts the time instance to local time representation.
+METHOD ToLocal : I_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToTimeOfDay" Id="{3907254b-850c-08df-0eb3-e92c9a7b266a}">
+      <Declaration><![CDATA[// Converts the time instance to a time of day  value.
+METHOD ToTimeOfDay : TOD // The time of day part of the time instance.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToUTC" Id="{b335cb6b-dd50-0930-36e1-8b29fd556e41}">
+      <Declaration><![CDATA[// Converts the time instance to UTC time representation.
+METHOD ToUTC : I_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Year" Id="{af38d0ea-4a56-0544-2827-2c9aab44f1a6}">
+      <Declaration><![CDATA[// The year extracted from the time instance.
+// [get] Returns the year as a 4 digit value.
+PROPERTY Year : T_Year]]></Declaration>
+      <Get Name="Get" Id="{678bfc35-e0da-0a0f-123f-d0e2dcdfe767}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

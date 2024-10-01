@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Timer" Id="{9f15de56-b770-4791-88f8-757da808d4d1}">
+    <Declaration><![CDATA[// This interface defines the behaviour of a timer, a type of timing source used
+// to track a specific duration. The timer can be started, paused, stopped, and
+// cleared. It is commonly used for timing events, delays, and other time-based
+// operations. The timer tracks elapsed time and can indicate when the set 
+// duration has expired.
+INTERFACE I_Timer EXTENDS I_TimingSource
+]]></Declaration>
+    <Method Name="Clear" Id="{fbde5924-6508-4072-84d4-3ac33b125a5c}">
+      <Declaration><![CDATA[// Clears the timer, resetting the elapsed time.
+METHOD Clear
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Duration" Id="{cd088390-8b66-43ef-8045-c7e3bf5c9701}">
+      <Declaration><![CDATA[// The duration for the timer. It specifies how long the timer should run before
+// it expires.
+// [get] Returns the set duration.
+// [set] Sets the duration for the timer.
+PROPERTY Duration : LTIME]]></Declaration>
+      <Get Name="Get" Id="{4b342c9b-964b-4324-acc0-5b8e596292e2}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{c0d7d71b-ee01-40fa-89e1-191f7c5d12be}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ElapsedTime" Id="{1fbfb67b-8cc7-45f9-825b-708932e30068}">
+      <Declaration><![CDATA[// The elapsed time since the timer was started.
+// [get] Returns the elapsed time.
+PROPERTY ElapsedTime  : LTIME]]></Declaration>
+      <Get Name="Get" Id="{b4ffe30e-7377-4327-8142-55cacc649397}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="HasExpired" Id="{9f743a48-2302-45ca-a2c2-a132cfcef96b}">
+      <Declaration><![CDATA[// Indicates whether the timer has expired.
+// [get] Returns TRUE if the timer has expired; otherwise, FALSE.
+PROPERTY HasExpired : BOOL]]></Declaration>
+      <Get Name="Get" Id="{babdbfeb-d5d6-4502-b862-2e5bf76f011f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="HasPaused" Id="{8d7afcd9-7c45-49f3-8d41-c28892d21654}">
+      <Declaration><![CDATA[// Indicates whether the timer is currently paused.
+// [get] Returns TRUE if the timer is paused; otherwise, FALSE.
+PROPERTY HasPaused : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b14d3f7a-9dbc-47db-8565-c1f35ad4c874}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="IsRunning" Id="{5a4a3611-16fb-41fc-8b0f-72af0a004b68}">
+      <Declaration><![CDATA[// Indicates whether the timer is currently running.
+// [get] Returns TRUE if the timer is running; otherwise, FALSE.
+PROPERTY IsRunning  : BOOL]]></Declaration>
+      <Get Name="Get" Id="{7183ac11-ec3b-4529-98d0-7bf2b16d602e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Pause" Id="{d21a3ad5-3bae-03fe-323c-88951657accd}">
+      <Declaration><![CDATA[// Pauses the timer, preserving the elapsed time without resetting.
+METHOD Pause
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Start" Id="{eeabeabc-df7e-4218-8966-f6444ad9be0a}">
+      <Declaration><![CDATA[// Starts the timer, beginning the tracking of time towards the specified duration.
+METHOD Start
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Stop" Id="{96644411-9fc8-4775-872e-6081ca03f88e}">
+      <Declaration><![CDATA[// Stops the timer, halting the tracking of time.
+METHOD Stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="TimeRemaining" Id="{3ce45e66-5e6b-4f1c-ab26-bc71712154fa}">
+      <Declaration><![CDATA[// The remaining time until the timer expires.
+// [get] Returns the time remaining until expiration.
+PROPERTY TimeRemaining : LTIME]]></Declaration>
+      <Get Name="Get" Id="{c17b6151-ded3-4707-b79b-99d76272e200}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

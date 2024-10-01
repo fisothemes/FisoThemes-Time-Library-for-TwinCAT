@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimingSource" Id="{d9342948-59da-4ad1-872b-b13b15d6ac91}">
+    <Declaration><![CDATA[// This interface serves as a marker or base type for various timing sources.
+// It allows for the use of polymorphism and type checking when working with
+// different timing sources, such as timers, stopwatches, and interval timers.
+INTERFACE I_TimingSource EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+  </Itf>
+</TcPlcObject>

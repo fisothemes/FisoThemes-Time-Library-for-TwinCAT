@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeInstanceConversions" Id="{02c37605-cd64-0110-10e1-3ac0b3fa4259}">
+    <Declaration><![CDATA[// Interface that defines operations for converting a time instance to different representations.
+INTERFACE I_TimeInstanceConversions EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="ToDate" Id="{3e1de5e2-c59a-053a-19e0-3202a9f54363}">
+      <Declaration><![CDATA[// Converts the time instance to a date value.
+METHOD ToDate : DATE // The date part of the time instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToDateTime" Id="{57c537ac-1fa1-0a27-29f3-8ad3bde001d7}">
+      <Declaration><![CDATA[// Converts the time instance to a combined date and time value.
+METHOD ToDateTime : DT // The combined date and time value as a DT (Date and Time).
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToLocal" Id="{ca7a7660-b8a0-06f6-232a-db6034aad0d4}">
+      <Declaration><![CDATA[// Converts the time instance to local time representation.
+METHOD ToLocal : I_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToTimeOfDay" Id="{153456ca-11d9-06cd-19cf-05591c474352}">
+      <Declaration><![CDATA[// Converts the time instance to a time of day  value.
+METHOD ToTimeOfDay : TOD // The time of day part of the time instance.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToUTC" Id="{52c8065d-d1a8-0c3b-19be-0197ba0293a1}">
+      <Declaration><![CDATA[// Converts the time instance to UTC time representation.
+METHOD ToUTC : I_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

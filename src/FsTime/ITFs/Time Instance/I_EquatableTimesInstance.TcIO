@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_EquatableTimesInstance" Id="{fdf7372c-2760-0768-2c7d-748d51a78cde}">
+    <Declaration><![CDATA[// This interface defines the operations for equality between time instance objects within a system.
+INTERFACE I_EquatableTimesInstance EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="IsEqualTo" Id="{eedf0d3e-c35a-027c-1782-3ce0e8db0678}">
+      <Declaration><![CDATA[// Checks if the current time instance is equal to the specified time instance.
+METHOD IsEqualTo : BOOL // TRUE if the current time instance is equal to the specified, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

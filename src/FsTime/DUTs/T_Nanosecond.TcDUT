@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Nanosecond" Id="{f94fdf51-9a73-01b5-1659-bab130db699c}">
+    <Declaration><![CDATA[// Represents the nanoseconds of the current microsecond, ranging from 0 to 999.
+TYPE T_Nanosecond : UINT(0..999); END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

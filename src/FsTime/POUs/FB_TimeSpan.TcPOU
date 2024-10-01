@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_TimeSpan" Id="{e2476913-33a2-0541-3fab-bc7f8e5be642}" SpecialFunc="None">
+    <Declaration><![CDATA[// A function block that represents a time span, providing properties and methods
+// to manipulate and convert time durations.
+// It implements interfaces for time span operations and properties.
+//
+// [usage]
+// 1. Use `FromTime` or `FromShortTime` methods to initialise the time span.
+// 2. Access properties like `Days`, `Hours`, `Minutes`, etc., to retrieve specific
+//    components of the time span.
+// 3. Utilise conversion methods like `ToSeconds`, `ToMilliseconds`, etc., to get
+//    the duration in different time units.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_TimeSpan 
+IMPLEMENTS 
+	I_TimeSpan, I_TimeSpanProperties, I_TimeSpanConversions
+VAR
+	_tTick : LTIME; // Stores the time duration in LTIME format.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Day" Id="{23d43e63-baf9-0192-3527-2ef65744ca3a}">
+      <Declaration><![CDATA[// The day component of the time span.
+// [get] Returns the day component of the time, with a value ranging from 0 to 213503.
+PROPERTY Day : UDINT(0..213503)]]></Declaration>
+      <Get Name="Get" Id="{06a62245-f6f6-0328-1bc4-1c17797566fd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Day := TO_UDINT(TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1D));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FromShortTime" Id="{10676a34-1ea0-0a33-1c52-d9663d78f501}">
+      <Declaration><![CDATA[// Sets the time span based on the given `TIME` value.
+// Initialises the time span using an `TIME` value.
+//
+// [Note]
+// `TIME` has a lower precision compared to `LTIME`.
+METHOD FromShortTime : I_TimeSpan // A reference to the current instance.
+VAR_INPUT
+	// The value used to set the time span.
+	tValue : TIME;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromShortTime := THIS^;
+
+THIS^._tTick := TO_LTIME(tValue);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FromTime" Id="{60d04525-ad8b-03a5-01af-63dae1273918}">
+      <Declaration><![CDATA[// Sets the time span based on the given `LTIME` value.
+// Initialises the time span using an `LTIME` value, which can represent time durations with high precision.
+METHOD FromTime : I_TimeSpan // A reference to the current instance.
+VAR_INPUT
+	// The value used to set the time span.
+	tValue : LTIME;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromTime := THIS^;
+
+THIS^._tTick := tValue;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Hour" Id="{cb3c87f9-39d8-02b3-20b5-7f37c1f9f540}">
+      <Declaration><![CDATA[// The hour component of the time span.
+// [get] Returns the hour component of the time, with a value ranging from 0 to 23.
+PROPERTY Hour : T_Hour]]></Declaration>
+      <Get Name="Get" Id="{29ab7d2c-5636-0884-13f6-74d917957c38}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Hour := 
+	TO_UINT(
+		(
+			TO_ULINT(THIS^._tTick) MOD TO_ULINT(LTIME#1D)
+		)
+		/ TO_ULINT(LTIME#1H));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Microsecond" Id="{71ee12f2-571e-06ba-23b0-59d704aee681}">
+      <Declaration><![CDATA[// The microsecond component of the time span.
+// [get] Returns the microsecond component, with a value ranging from 0 to 999.
+PROPERTY Microsecond : T_Microsecond]]></Declaration>
+      <Get Name="Get" Id="{afae1f32-de33-0902-2d12-852e160f5ab0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Microsecond := 
+	TO_UINT(
+		(
+			TO_ULINT(THIS^._tTick) MOD TO_ULINT(LTIME#1MS)
+		)
+		/ TO_ULINT(LTIME#1US));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Millisecond" Id="{12f5fbbf-0d34-09ff-3890-c2f1634d4188}">
+      <Declaration><![CDATA[// The millisecond component of the time span.
+// [get] Returns the millisecond component, with a value ranging from 0 to 999.
+PROPERTY Millisecond : T_Millisecond]]></Declaration>
+      <Get Name="Get" Id="{9a6e0a4d-bda3-06e3-3cea-852f4268bdf9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Millisecond := 
+	TO_UINT(
+		(
+			TO_ULINT(THIS^._tTick) MOD TO_ULINT(LTIME#1S)
+		)
+		/ TO_ULINT(LTIME#1MS));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Minute" Id="{e4f6a81c-2ec3-0c59-0067-f070b86488c5}">
+      <Declaration><![CDATA[// The minute component of the time span.
+// [get] Returns the minute component, with a value ranging from 0 to 59.
+PROPERTY Minute : T_Minute]]></Declaration>
+      <Get Name="Get" Id="{52c43224-9a18-0089-3ca0-3d1b837f68c4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Minute :=
+	TO_UINT(
+		(
+			TO_ULINT(THIS^._tTick) MOD TO_ULINT(LTIME#1H)
+		) 
+		/ TO_ULINT(LTIME#1M));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Nanosecond" Id="{40545abb-506e-0835-0ca6-df6747a0a984}">
+      <Declaration><![CDATA[// The nanosecond component of the time span.
+// [get] Returns the nanosecond component, with a value ranging from 0 to 999.
+PROPERTY Nanosecond : T_Nanosecond]]></Declaration>
+      <Get Name="Get" Id="{8bd7a37e-fe6d-0ed1-0418-57e140dc2ef5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Nanosecond := 
+	TO_UINT(
+		(
+			TO_ULINT(THIS^._tTick) MOD TO_ULINT(LTIME#1US)
+		)
+		/ TO_ULINT(LTIME#1NS));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Now" Id="{e1d4a1a5-fc48-0105-3c8f-0ddee0661897}">
+      <Declaration><![CDATA[// Sets the time span to the system's tick value.
+METHOD Now : I_TimeSpan // A reference to the current time span instance.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Now := THIS^;
+
+THIS^._tTick := LTIME();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Second" Id="{dbb06f2b-c962-06e9-3201-cd2f95be207c}">
+      <Declaration><![CDATA[// The second component of the time span.
+// [get] Returns the second component, with a value ranging from 0 to 59.
+PROPERTY Second : T_Second]]></Declaration>
+      <Get Name="Get" Id="{01345e4b-0b74-095c-3350-edf41ded8fa0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Second := 
+	TO_UINT(
+		(
+			TO_ULINT(THIS^._tTick) MOD TO_ULINT(TIME#1M)
+		) 
+		/ TO_ULINT(LTIME#1S));]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Span" Id="{128dcf1d-2c8c-048b-3a71-c509c3cae2dd}">
+      <Declaration><![CDATA[// The reference to the current time span.
+// [get] Returns a reference to the current time instance implementing `I_TimeSpan`.
+PROPERTY Span : I_TimeSpan]]></Declaration>
+      <Get Name="Get" Id="{12128dee-709a-0aa7-0ca9-85a966249019}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Span := THIS^;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Tick" Id="{13f212db-1f58-0faa-170e-541c1e280c00}">
+      <Declaration><![CDATA[// Represents the time span as LTIME.
+// [get] Returns the time span value as an LTIME, which can be used for time calculations and comparisons.
+PROPERTY Tick : LTIME]]></Declaration>
+      <Get Name="Get" Id="{b494d89c-0624-08e7-22c4-f309d2755164}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Tick := THIS^._tTick;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="ToDays" Id="{5fa61820-4a47-0eb9-319f-9da03e9afc95}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into days.
+METHOD ToDays : ULINT // The total number of days in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToDays := TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1D);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToHours" Id="{e6cb6e0c-ff44-0194-3709-23cd1b54972a}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into hours.
+METHOD ToHours : ULINT // The total number of hours in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToHours := TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1H);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToMicroseconds" Id="{1679433d-2b04-0200-245a-621012be0704}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into microseconds.
+METHOD ToMicroseconds : ULINT // The total number of microseconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToMicroseconds := TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1US);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToMilliseconds" Id="{0632aa4f-0a0f-05a9-3914-80e3376b3f05}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into milliseconds.
+METHOD ToMilliseconds : ULINT // The total number of milliseconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToMilliseconds := TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1MS);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToMinutes" Id="{86c1337d-ec19-0d2a-0262-93fee469795d}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into minutes.
+METHOD ToMinutes : ULINT // The total number of minutes in the time span.
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToMinutes := TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1M);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToNanoseconds" Id="{ca5b85c7-bd72-0e9b-1650-faf49bbb920d}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into nanoseconds.
+METHOD ToNanoseconds : ULINT // The total number of nanoseconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToNanoseconds := TO_ULINT(THIS^._tTick);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToSeconds" Id="{c26e76e0-5721-0c1d-093a-ad029d8c06eb}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into seconds.
+METHOD ToSeconds : ULINT // The total number of seconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToSeconds := TO_ULINT(THIS^._tTick) / TO_ULINT(LTIME#1S);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

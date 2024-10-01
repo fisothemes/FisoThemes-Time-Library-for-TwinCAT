@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_ComparableTimesInstance" Id="{782dc7d5-4aae-0b2b-3a25-c50296dc9075}">
+    <Declaration><![CDATA[// This interface defines operations for comparing time instance objects within a system.
+INTERFACE I_ComparableTimesInstance EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="IsAfter" Id="{737b4c21-4f12-0064-1b71-7d6d5930b9a1}">
+      <Declaration><![CDATA[// Checks if the current time instance is after the specified time instance.
+METHOD IsAfter : BOOL // TRUE if the current time instance is after the specified one, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsBefore" Id="{ea508d7d-4c04-0fb7-344a-a0dcf8748e49}">
+      <Declaration><![CDATA[// Checks if the current time instance is before the specified time instance.
+METHOD IsBefore : BOOL // TRUE if the current time instance is before the specified one, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsEqualTo" Id="{7e8ba10d-00e1-0109-0201-1125b5eff6e0}">
+      <Declaration><![CDATA[// Checks if the current time instance is equal to the specified time instance.
+METHOD IsEqualTo : BOOL // TRUE if the current time instance is equal to the specified, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

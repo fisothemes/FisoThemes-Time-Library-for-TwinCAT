@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeInstanceArithmetics" Id="{e0643f71-d721-0ade-15fb-ada06a838498}">
+    <Declaration><![CDATA[// Interface that defines the arithmetic operations for a time instance.
+INTERFACE I_TimeInstanceArithmetics EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+  </Itf>
+</TcPlcObject>

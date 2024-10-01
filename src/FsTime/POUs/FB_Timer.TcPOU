@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Timer" Id="{1173d6c9-6906-0ce6-1da4-0f52aff33c5c}" SpecialFunc="None">
+    <Declaration><![CDATA[// A timing source that is used to track a specified duration. It provides methods
+// to start, stop, pause, and clear the timer, and properties to track its state.
+//
+// [usage]
+// 1. Set the desired duration using the `Duration` property.
+// 2. Start the timer using the `Start` method.
+// 3. Optionally, call `Pause` to pause the timer and `Start` again to resume it.
+// 4. Check the `ElapsedTime` and `TimeRemaining` properties to monitor the timer’s progress.
+// 5. When the timer reaches the duration, the `HasExpired` property will return `TRUE`.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_Timer IMPLEMENTS I_Timer
+VAR
+    _tStartTime		: LTIME; // The time when the timer was started.
+    _tPausedTime	: LTIME; // The time when the timer was paused.
+    _tDuration		: LTIME; // The total duration set for the timer.
+    _bIsRunning		: BOOL;  // Indicates whether the timer is currently running.
+    _bHasPaused		: BOOL;  // Indicates whether the timer is currently paused.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Clear" Id="{d4b8bebd-31b3-0ab6-080b-f67ffcedba6d}">
+      <Declaration><![CDATA[// Clears the timer, resetting the elapsed time to zero.
+//
+// [note]
+// The timer must be running for this method to take effect. If the timer is
+// paused, the paused state is cleared as well.
+METHOD Clear
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT THIS^._bIsRunning THEN RETURN; END_IF
+IF THIS^._bHasPaused THEN THIS^._tPausedTime := LTIME#0S; END_IF
+THIS^._tStartTime := LTIME();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Duration" Id="{5bd667dc-2e54-01f2-12eb-3f975e69c7c9}">
+      <Declaration><![CDATA[// The duration for the timer. It specifies how long the timer should run before
+// it expires.
+// [get] Returns the set duration.
+// [set] Sets the duration for the timer.
+PROPERTY Duration : LTIME]]></Declaration>
+      <Get Name="Get" Id="{fda732ee-e2db-0a09-37cf-0698753d2bd5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Duration := THIS^._tDuration;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{1bcee298-f3f4-04f5-271c-e9d7147f35b4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^._tDuration := Duration;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ElapsedTime" Id="{a9a775ae-8214-096f-279c-7e1d0e477394}">
+      <Declaration><![CDATA[// The elapsed time since the timer was started.
+// [get] Returns the elapsed time.
+PROPERTY ElapsedTime  : LTIME]]></Declaration>
+      <Get Name="Get" Id="{db141600-c564-01d0-15d6-7d516220d5f4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^._bIsRunning THEN
+	ElapsedTime :=
+		SEL(THIS^._bHasPaused,
+			LIMIT(LTIME#0S, LTIME() - THIS^._tStartTime, THIS^._tDuration),
+			THIS^._tPausedTime);
+ELSE
+	ElapsedTime := LTIME#0S;
+	END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="HasExpired" Id="{ab55ac20-0335-0653-1dac-8df50dc1e34f}">
+      <Declaration><![CDATA[// Indicates whether the timer has expired.
+// [get] Returns TRUE if the timer is running and has expired; otherwise, FALSE.
+PROPERTY HasExpired : BOOL]]></Declaration>
+      <Get Name="Get" Id="{be0adb63-b94c-00fc-22b6-5177ecc6fd52}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasExpired := THIS^._bIsRunning AND (THIS^.ElapsedTime >= THIS^._tDuration);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="HasPaused" Id="{4684fdea-9d38-0688-1af9-074632112aee}">
+      <Declaration><![CDATA[// Indicates whether the timer is currently paused.
+// [get] Returns TRUE if the timer is is running and paused; otherwise, FALSE.
+PROPERTY HasPaused : BOOL]]></Declaration>
+      <Get Name="Get" Id="{2fd51c27-d6e3-0df7-0744-8a32c2fdda3e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasPaused := THIS^._bIsRunning AND THIS^._bHasPaused;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsRunning" Id="{d05c66a6-4ffe-0327-0279-babc26d58596}">
+      <Declaration><![CDATA[// Indicates whether the timer is currently running.
+// [get] Returns TRUE if the timer is running; otherwise, FALSE.
+PROPERTY IsRunning  : BOOL]]></Declaration>
+      <Get Name="Get" Id="{106b379a-002c-03d4-2b28-2a86fcac5aca}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsRunning := THIS^._bIsRunning;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Pause" Id="{fc7b7adc-d3b5-0333-3dbc-c2a2a429ea6f}">
+      <Declaration><![CDATA[// Pauses the timer, preserving the elapsed time without resetting.
+//
+// [note]
+// If the timer is already paused or not running, this method does nothing.
+METHOD Pause
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (NOT THIS^._bIsRunning) OR THIS^._bHasPaused THEN RETURN; END_IF
+
+THIS^._tPausedTime := LTIME() - THIS^._tStartTime;
+THIS^._bHasPaused := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{08f7c253-6e4d-0aaf-3dc8-54b9647ec8c4}">
+      <Declaration><![CDATA[// Starts the timer, beginning the tracking of time towards the specified duration.
+//
+// [note]
+// If the timer was previously paused, it resumes from the paused time. 
+// If the timer is already running, this method does nothing.
+METHOD Start
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^._bIsRunning AND (NOT THIS^._bHasPaused) THEN RETURN; END_IF
+
+THIS^._tStartTime :=
+	SEL(THIS^._bHasPaused, LTIME(), LTIME() - THIS^._tPausedTime);
+
+THIS^._bIsRunning := TRUE;
+THIS^._bHasPaused := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{0ab493a3-8013-08cd-1c2b-6b4f5fc1385c}">
+      <Declaration><![CDATA[// Stops the timer, halting the tracking of time.
+//
+//[note]
+// If the timer is not running, this method does nothing.
+// If the timer is paused it's pause state will be cleared.
+METHOD Stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT THIS^._bIsRunning THEN RETURN; END_IF
+
+THIS^._bIsRunning := FALSE;
+THIS^._bHasPaused := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="TimeRemaining" Id="{c5361286-42a5-0eda-34b1-e097e186bf44}">
+      <Declaration><![CDATA[// The remaining time until the timer expires.
+// [get] Returns the time remaining until expiration.
+PROPERTY TimeRemaining : LTIME]]></Declaration>
+      <Get Name="Get" Id="{ae50884c-b7fe-0a3b-13d2-acc4d460b007}">
+        <Declaration><![CDATA[VAR
+	tElapsedTime : LTIME;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[tElapsedTime := THIS^.ElapsedTime;
+TimeRemaining := MAX(THIS^._tDuration, tElapsedTime) - tElapsedTime;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeInstanceProperties" Id="{bdaac79c-e1d3-0683-0d0d-c911bb9719f4}">
+    <Declaration><![CDATA[// Inertface for defining the basic properties of a time instance.
+INTERFACE I_TimeInstanceProperties EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Property Name="DayOfMonth" Id="{567d3303-c7df-00b7-0535-70b2afb3b710}">
+      <Declaration><![CDATA[// The day of the month extracted from the time instance.
+// [get] Returns the day component of the date, with a value ranging from 1 to 31.
+PROPERTY DayOfMonth : T_DayOfMonth]]></Declaration>
+      <Get Name="Get" Id="{ee6a285d-01f9-0bbf-27f3-1b669fb8e5fd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="DayOfWeek" Id="{40f80d75-4959-0525-0c05-c8afb8e60be0}">
+      <Declaration><![CDATA[// The day of the week extracted from the time instance.
+// [get] Returns the day as an `E_DayOfWeek` enum or value ranging from 1 (Monday) to 7 (Sunday).
+PROPERTY DayOfWeek : E_DayOfWeek]]></Declaration>
+      <Get Name="Get" Id="{df59ebed-51c9-041b-0939-f8263b3bcdeb}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="DayOfYear" Id="{64875cc3-db65-0349-29ce-6533ce784f2e}">
+      <Declaration><![CDATA[// The day of the year extracted from the time instance.
+// [get] Returns the day of the year, with a value ranging from 1 to 366.
+PROPERTY DayOfYear : T_DayOfYear]]></Declaration>
+      <Get Name="Get" Id="{21dde374-7855-03a3-3411-ed4b73b717f8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="EpochMilliseconds" Id="{a071cd63-b602-0095-2c87-22b4d054e579}">
+      <Declaration><![CDATA[// The time instance value represented as the number of milliseconds since
+// Thursday, 1.1.1970 00:00:00.000 (Unix epoch).
+// [get] Returns the time instance value in milliseconds.
+PROPERTY EpochMilliseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{c8975830-95b3-0283-0fcc-712e8c8e6f12}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Hour" Id="{e59ad18b-4d27-0325-376f-35acd30dc055}">
+      <Declaration><![CDATA[// The hour of the day extracted from the time instance.
+// [get] Returns the hour component of the time, with a value ranging from 0 to 23.
+PROPERTY Hour : T_Hour]]></Declaration>
+      <Get Name="Get" Id="{7b200814-1136-0ec2-16ac-c2dc4fff1a79}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Kind" Id="{b749c4f1-6711-031a-187b-b04044ad9ac5}">
+      <Declaration><![CDATA[// Specifies whether the time instance is in UTC or local time format.
+// [get] Returns the time instance type enum as a value.
+PROPERTY Kind : E_TimeInstanceKind]]></Declaration>
+      <Get Name="Get" Id="{e74488f6-14d9-0284-21e8-d8e03f73405f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Millisecond" Id="{654cc7ae-1ad1-0ffe-1e27-0ce3a0f717ca}">
+      <Declaration><![CDATA[// The millisecond part of the second extracted from the time instance.
+// [get] Returns the millisecond component, with a value ranging from 0 to 999.
+PROPERTY Millisecond : T_Millisecond]]></Declaration>
+      <Get Name="Get" Id="{3d09caa9-1db4-0cf3-155c-6dcd71ab8ffe}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Minute" Id="{cfabe9f8-1c04-0696-0e30-8ad8f7e2fa4b}">
+      <Declaration><![CDATA[// The minute of the hour extracted from the time instance.
+// [get] Returns the minute component, with a value ranging from 0 to 59.
+PROPERTY Minute : T_Minute]]></Declaration>
+      <Get Name="Get" Id="{21ab2f68-07aa-04e3-15da-e8a4725cc8f7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Month" Id="{af2ba5d9-ae64-0319-365a-ade27d04bfb8}">
+      <Declaration><![CDATA[// The month of the year extracted from the time instance.
+// [get] Returns the month as an `E_Month` enum or a value ranging from 1 to 12 value.
+PROPERTY Month : E_Month]]></Declaration>
+      <Get Name="Get" Id="{efecae49-0d64-0e1b-084d-86c9b881d77c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Second" Id="{94da2a28-8f8a-0d86-218b-0236a8390dbc}">
+      <Declaration><![CDATA[// The second of the minute extracted from the time instance.
+// [get] Returns the second component, with a value ranging from 0 to 59.
+PROPERTY Second : T_Second]]></Declaration>
+      <Get Name="Get" Id="{b311cb7b-6995-061f-3e84-e2a4c0eccc0d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Year" Id="{24748c53-8103-0622-2ee6-0a031543f9e3}">
+      <Declaration><![CDATA[// The year extracted from the time instance.
+// [get] Returns the year as a 4 digit value.
+PROPERTY Year : T_Year]]></Declaration>
+      <Get Name="Get" Id="{a23435a9-bc00-0879-3c7f-00cac728259d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

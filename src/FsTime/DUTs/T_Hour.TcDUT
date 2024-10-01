@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Hour" Id="{fc246c4a-5dd5-01d3-1b27-d49940377eb3}">
+    <Declaration><![CDATA[// Represents the hours of the current day, based on a 24-hour format, ranging from 0 to 23.
+TYPE T_Hour : UINT(0..23); END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Stopwatch" Id="{5068795e-5d24-46b4-a558-2cc0b5425d54}" SpecialFunc="None">
+    <Declaration><![CDATA[// A simple stopwatch that tracks elapsed time between a start and stop event.
+// The stopwatch can be cleared to reset the elapsed time.
+//
+// [usage]
+// Call the `Start` method to begin timing. The `ElapsedTime` property will track
+// the time until the `Stop` method is called. To reset the elapsed time, use the
+// `Clear` method.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_Stopwatch IMPLEMENTS I_Stopwatch
+VAR
+    _tStartTime     : LTIME; // Timestamp when the stopwatch was started.
+    _tElapsedTime   : LTIME; // Accumulated elapsed time.
+    _bIsRunning     : BOOL;  // Indicates if the stopwatch is currently running.
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Clear" Id="{8a734f20-2793-4e33-8cd2-eb9e05750356}">
+      <Declaration><![CDATA[// Clears the stopwatch, resetting the elapsed time to zero.
+METHOD Clear
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^._tElapsedTime := LTIME#0S;
+IF THIS^._bIsRunning THEN THIS^._tStartTime := LTIME(); END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ElapsedTime" Id="{a89c4ea6-d5f5-4792-9267-403a7d64611e}">
+      <Declaration><![CDATA[// The elapsed time measured by the stopwatch since it was started.
+// [get] Returns the elapsed time.
+PROPERTY ElapsedTime  : LTIME]]></Declaration>
+      <Get Name="Get" Id="{90206692-7437-4297-9184-67c1769d198b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ElapsedTime := THIS^._tElapsedTime := 
+	SEL(
+		THIS^._bIsRunning,
+		THIS^._tElapsedTime,
+		LTIME() - THIS^._tStartTime);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsRunning" Id="{0767697a-5e74-009c-1faf-71f4fb8919fa}">
+      <Declaration><![CDATA[// Indicates whether the stopwatch is currently running.
+// [get] Returns TRUE if the stopwatch is running; otherwise, FALSE.
+PROPERTY IsRunning  : BOOL]]></Declaration>
+      <Get Name="Get" Id="{07335e22-3c72-0799-2411-bc34057016ba}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsRunning := THIS^._bIsRunning;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Start" Id="{e75551cf-df10-082b-2fe6-045dc7b69c30}">
+      <Declaration><![CDATA[// Starts the stopwatch, beginning the measurement of elapsed time.
+METHOD Start
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^._bIsRunning THEN RETURN; END_IF
+
+THIS^._tStartTime := LTIME();
+THIS^._bIsRunning := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{13521b2e-8e88-052e-07c6-033ece077ae6}">
+      <Declaration><![CDATA[// Stops the stopwatch, halting the measurement of elapsed time.
+METHOD Stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT THIS^._bIsRunning THEN RETURN; END_IF
+
+THIS^._tElapsedTime := THIS^._tElapsedTime := LTIME() - THIS^._tStartTime;
+THIS^._bIsRunning 	:= FALSE;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

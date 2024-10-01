@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Second" Id="{c5f44eb4-e975-0361-06dc-1cc66b18d41e}">
+    <Declaration><![CDATA[// Represents the seconds of the current minute, ranging from 0 to 59.
+TYPE T_Second : UINT(0..59); END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

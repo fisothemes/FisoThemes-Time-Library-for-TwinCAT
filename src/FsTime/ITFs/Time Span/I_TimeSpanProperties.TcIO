@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeSpanProperties" Id="{a3b2af00-fe77-0023-1aaa-c4a576f4f824}">
+    <Declaration><![CDATA[INTERFACE I_TimeSpanProperties
+]]></Declaration>
+    <Property Name="Day" Id="{0c63e8d3-e7fe-063c-2593-fc3e8a78f517}">
+      <Declaration><![CDATA[// The day component of the time span.
+// [get] Returns the day component of the time, with a value ranging from 0 to 213503.
+PROPERTY Day : UDINT(0..213503)]]></Declaration>
+      <Get Name="Get" Id="{585ee882-9a5b-0be9-3992-a5b8065ea7e4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Hour" Id="{1a3fec51-1503-03ee-3f5e-1dec76a9c84b}">
+      <Declaration><![CDATA[// The hour component of the time span.
+// [get] Returns the hour component of the time, with a value ranging from 0 to 23.
+PROPERTY Hour : T_Hour]]></Declaration>
+      <Get Name="Get" Id="{6d289357-9c65-0666-2077-d43f9d583c5f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Microsecond" Id="{33fc9c17-a94c-087f-077a-c050d55c3f61}">
+      <Declaration><![CDATA[// The microsecond component of the time span.
+// [get] Returns the microsecond component, with a value ranging from 0 to 999.
+PROPERTY Microsecond : T_Microsecond]]></Declaration>
+      <Get Name="Get" Id="{e85ef18a-43ed-0a77-3ed0-605070a71ddd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Millisecond" Id="{59ed6a56-b36a-0975-3ee7-516bd37381f3}">
+      <Declaration><![CDATA[// The millisecond component of the time span.
+// [get] Returns the millisecond component, with a value ranging from 0 to 999.
+PROPERTY Millisecond : T_Millisecond]]></Declaration>
+      <Get Name="Get" Id="{89322a15-7dd4-0f38-2449-71788d465c8b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Minute" Id="{9c41c619-4059-06e9-260b-fa84836ea772}">
+      <Declaration><![CDATA[// The minute component of the time span.
+// [get] Returns the minute component, with a value ranging from 0 to 59.
+PROPERTY Minute : T_Minute]]></Declaration>
+      <Get Name="Get" Id="{edacee08-2ed6-0e82-17ae-639fad6345fe}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Nanosecond" Id="{28e5c8c2-d535-022d-381a-0425ca27fc3f}">
+      <Declaration><![CDATA[// The nanosecond component of the time span.
+// [get] Returns the nanosecond component, with a value ranging from 0 to 999.
+PROPERTY Nanosecond : T_Nanosecond]]></Declaration>
+      <Get Name="Get" Id="{c455429d-136a-0038-2de1-5ba8c9ed30f0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Second" Id="{01ceb48b-250c-07a3-06e9-2e7c81d01ecb}">
+      <Declaration><![CDATA[// The second component of the time span.
+// [get] Returns the second component, with a value ranging from 0 to 59.
+PROPERTY Second : T_Second]]></Declaration>
+      <Get Name="Get" Id="{b74f153f-b17c-05a1-03f6-17288fab46e0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Tick" Id="{775d2fb3-4208-01d6-35f1-e32060ce51a0}">
+      <Declaration><![CDATA[// Represents the time span as LTIME.
+// [get] Returns the time span value as an LTIME, which can be used for time calculations and comparisons.
+PROPERTY Tick : LTIME]]></Declaration>
+      <Get Name="Get" Id="{81540959-99fe-0ed2-22e4-aa04b8cdb7fb}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

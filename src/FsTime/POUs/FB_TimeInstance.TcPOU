@@ -1,0 +1,490 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_TimeInstance" Id="{e6e6de43-7b7f-074b-1ca2-4b053bea74e2}" SpecialFunc="None">
+    <Declaration><![CDATA[// A time instance function block that represents a date and time value based on the Unix epoch (1st Jan 1970, 00:00:00.000).
+// The block provides various methods and properties to interact with the time instance, including support for UTC and local time representations.
+// It can be used for time calculations, comparisons, and conversions to different time formats (e.g., `DT`, `DATE`, `TOD`).
+//
+// [usage]
+// The time instance can be set using various methods such as `FromDateTime` or `FromEpochMilliseconds`. 
+// Use properties like `Year`, `Month`, `DayOfMonth`, `Hour`, and `Minute` to extract specific components of the date and time.
+// Additionally, the `ToLocal` and `ToUTC` properties allow switching between different time modes.
+// Use the `Kind` property to check the time mode.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_explicit_call' := 'calling this function block directly is not allowed'}
+FUNCTION_BLOCK FINAL FB_TimeInstance 
+IMPLEMENTS 
+	I_TimeInstance, I_ComparableTimesInstance, I_EquatableTimesInstance, 
+	I_TimeInstanceProperties, I_TimeInstanceArithmetics, I_TimeInstanceConversions
+VAR
+    _nEpochMilliseconds : ULINT; // The raw time instance value in milliseconds since 1st Jan 1970.
+    _Date				: SysTimeRtc.SYSTIMEDATE; // Structured representation of the time instance (year, month, day, etc.).
+    _eKind				: E_TimeInstanceKind; // Indicates whether the time instance is in UTC or Local time.
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="DayOfMonth" Id="{60e816e1-4435-0612-1eae-4d7005c3d9fb}">
+      <Declaration><![CDATA[// The day of the month extracted from the time instance.
+// [get] Returns the day component of the date, with a value ranging from 1 to 31.
+PROPERTY DayOfMonth : T_DayOfMonth]]></Declaration>
+      <Get Name="Get" Id="{3907a527-b18e-0503-12be-c51e2dbc8e67}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[DayOfMonth := THIS^._Date.wDay;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="DayOfWeek" Id="{59f79d25-beac-0bde-08ed-1040cb742c57}">
+      <Declaration><![CDATA[// The day of the week extracted from the time instance.
+// [get] Returns the day as an `E_DayOfWeek` enum or value ranging from 1 (Monday) to 7 (Sunday).
+PROPERTY DayOfWeek : E_DayOfWeek]]></Declaration>
+      <Get Name="Get" Id="{8d78e11e-55dc-0c40-3dde-ce876e3fb30b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[DayOfWeek := THIS^._Date.wDayOfWeek;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="DayOfYear" Id="{362b65ee-c21c-0c53-03d9-e3bf2606a66b}">
+      <Declaration><![CDATA[// The day of the year extracted from the time instance.
+// [get] Returns the day of the year, with a value ranging from 1 to 366.
+PROPERTY DayOfYear : T_DayOfYear]]></Declaration>
+      <Get Name="Get" Id="{e762102a-48dc-019e-127f-fd4d88b185cc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[DayOfYear := THIS^._Date.wYday;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="EpochMilliseconds" Id="{20301beb-082b-097b-1c4e-628b84fa049a}">
+      <Declaration><![CDATA[// The time instance value represented as the number of milliseconds since
+// Thursday, 1.1.1970 00:00:00.000 (Unix epoch).
+// [get] Returns the time instance value in milliseconds.
+PROPERTY EpochMilliseconds : ULINT]]></Declaration>
+      <Get Name="Get" Id="{7077aa0d-dfac-05c6-3c0e-51fb09ce5e0b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[EpochMilliseconds := THIS^._nEpochMilliseconds;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FromDate" Id="{42e1dd4b-64bc-0652-35b6-11c170ba588f}">
+      <Declaration><![CDATA[// Sets the time instance based on a given `DATE` value as UTC.
+METHOD FromDate : I_TimeInstance // A reference to the current instance.
+VAR_INPUT
+	// The input `DATE` value to convert to a time instance.
+	dValue : DATE;
+END_VAR
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromDate := THIS^;
+
+THIS^.FromEpochMilliseconds(TO_ULINT(dValue) * 1000, Error => Error);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FromDateTime" Id="{ccb59f48-60a9-0163-3fe2-e66c66b0578d}">
+      <Declaration><![CDATA[// Sets the time instance based on a given `DT` (Date and Time) value as UTC.
+METHOD FromDateTime : I_TimeInstance // A reference to the current instance.
+VAR_INPUT
+	// The input `DT` value to convert to a time instance.
+	dtValue : DT;
+END_VAR
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromDateTime := THIS^;
+
+THIS^.FromEpochMilliseconds(TO_ULINT(dtValue) * 1000, Error => Error);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FromEpochMilliseconds" Id="{981d420c-033f-01b4-325c-9d1f4c94167f}">
+      <Declaration><![CDATA[// Sets the time instance based on a given number of milliseconds since the Unix epoch (1st Jan 1970, 00:00:00.000).
+METHOD FromEpochMilliseconds : I_TimeInstance // A reference to the current instance.
+VAR_INPUT
+	// The input time instance value representing the number of milliseconds since 1st Jan 1970, 00:00:00.000.
+	nValue : ULINT;
+END_VAR
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+VAR
+	eResult : FsError.E_CodesysCmpError;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromEpochMilliseconds := THIS^;
+
+IF THIS^._nEpochMilliseconds = nValue THEN RETURN; END_IF
+
+eResult := SysTimeRtc.SysTimeRtcConvertHighResToDate(nValue, THIS^._Date);
+CASE eResult OF
+	FsError.E_CodesysCmpError.ERR_OK:
+		THIS^._eKind := E_TimeInstanceKind.UTC;
+		THIS^._nEpochMilliseconds := nValue;
+ELSE
+	Error := 
+		FsError.F_CreateErrorFromStartRange(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_CODESYS_BEGIN,
+			eResult);
+	THIS^.FB_init(FALSE, FALSE);
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FromTime" Id="{fe00b6a2-8466-0e34-2dac-d4faeee2cf7f}">
+      <Declaration><![CDATA[// Sets the time instance using the specified `LTIME` value. 
+// This method converts the input value to milliseconds since the Unix epoch (1st Jan 1970, 00:00:00.000). 
+//
+// [note] 
+// The method only considers the time value down to the millisecond precision. 
+// Any values smaller than 1ms (e.g., microseconds or nanoseconds) will be ignored.
+METHOD FromTime : I_TimeInstance // A reference to the current instance.
+VAR_INPUT
+	// The time value to be set, provided as an LTIME datatype (milliseconds since the Unix epoch).
+	tValue : LTIME;
+END_VAR
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromTime := THIS^;
+
+THIS^.FromEpochMilliseconds(TO_ULINT(tValue) / TO_ULINT(LTIME#1MS), Error => Error);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FromTimeOfDay" Id="{cc6108ea-0cc3-0982-0207-ff06faa4e04b}">
+      <Declaration><![CDATA[// Sets the time instance based on a given `TOD` (Time Of Day) value as UTC.
+METHOD FromTimeOfDay : I_TimeInstance // A reference to the current instance.
+VAR_INPUT
+	// The input `TOD` value to convert to a time instance.
+	tdValue : TOD;
+END_VAR
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FromTimeOfDay := THIS^;
+
+THIS^.FromEpochMilliseconds(TO_ULINT(tdValue), Error => Error);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Hour" Id="{90138cb2-1221-0609-030d-4f9ef31dc45c}">
+      <Declaration><![CDATA[// The hour of the day extracted from the time instance.
+// [get] Returns the hour component of the time, with a value ranging from 0 to 23.
+PROPERTY Hour : T_Hour]]></Declaration>
+      <Get Name="Get" Id="{37588880-29d2-0e46-311f-356406dc721c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Hour := THIS^._Date.wHour;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Instance" Id="{69ebd0df-325d-02f3-13a8-a8969e45adc2}">
+      <Declaration><![CDATA[// The reference to the current time instance.
+// [get] Returns a reference to the current time instance implementing `I_TimeInstance`.
+PROPERTY Instance : I_TimeInstance]]></Declaration>
+      <Get Name="Get" Id="{b6878157-2ede-0255-25ee-95c0daf56b49}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Instance := THIS^;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="IsAfter" Id="{2cae66b8-d1e7-0d00-329c-004410e04b9c}">
+      <Declaration><![CDATA[// Checks if the current time instance is after the specified time instance.
+METHOD IsAfter : BOOL // TRUE if the current time instance is after the specified one, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsAfter := 
+	ipOther <> 0
+	AND_THEN
+	THIS^._nEpochMilliseconds > ipOther.EpochMilliseconds;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsBefore" Id="{7bdfa8a4-9e8c-08f7-2a9e-dd667eefde6f}">
+      <Declaration><![CDATA[// Checks if the current time instance is before the specified time instance.
+METHOD IsBefore : BOOL // TRUE if the current time instance is before the specified one, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsBefore := 
+	ipOther <> 0
+	AND_THEN
+	THIS^._nEpochMilliseconds < ipOther.EpochMilliseconds;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsEqualTo" Id="{dba8a7a0-0fb8-0377-3898-12345927eed2}">
+      <Declaration><![CDATA[// Checks if the current time instance is equal to the specified time instance.
+METHOD IsEqualTo : BOOL // TRUE if the current time instance is equal to the specified, FALSE otherwise.
+VAR_INPUT
+	// The time instance to compare against.
+	ipOther : I_TimeInstance;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsEqualTo := 
+	ipOther <> 0
+	AND_THEN
+	THIS^._nEpochMilliseconds = ipOther.EpochMilliseconds;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Kind" Id="{658eca20-c9a9-0a35-0410-abd3c3bb0096}">
+      <Declaration><![CDATA[// Specifies whether the time instance is in UTC or local time format.
+// [get] Returns the time instance type enum as a value.
+PROPERTY Kind : E_TimeInstanceKind]]></Declaration>
+      <Get Name="Get" Id="{c8271b94-a3ea-0898-3d8d-3bce821625da}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Kind := THIS^._eKind;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Millisecond" Id="{08face5a-d595-0366-1b6e-3949928e1e48}">
+      <Declaration><![CDATA[// The millisecond part of the second extracted from the time instance.
+// [get] Returns the millisecond component, with a value ranging from 0 to 999.
+PROPERTY Millisecond : T_Millisecond]]></Declaration>
+      <Get Name="Get" Id="{a2f4f72b-afe3-069a-099b-63ebd77733e5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Millisecond := THIS^._Date.wMilliseconds;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Minute" Id="{15bbdfde-68d3-0477-1d1a-e9c08dbf3a01}">
+      <Declaration><![CDATA[// The minute of the hour extracted from the time instance.
+// [get] Returns the minute component, with a value ranging from 0 to 59.
+PROPERTY Minute : T_Minute]]></Declaration>
+      <Get Name="Get" Id="{2f040977-7fbf-0347-26fe-85d0654f570f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Minute := THIS^._Date.wMinute;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Month" Id="{62c0f3ed-8996-053c-1c72-3a5c119d406a}">
+      <Declaration><![CDATA[// The month of the year extracted from the time instance.
+// [get] Returns the month as an `E_Month` enum or a value ranging from 1 to 12 value.
+PROPERTY Month : E_Month]]></Declaration>
+      <Get Name="Get" Id="{7d094cda-b6c5-0b42-1c78-04bd7a82240a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Month := THIS^._Date.wMonth;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Now" Id="{b1bf1f77-5c7b-0d28-1300-c411e2b5f387}">
+      <Declaration><![CDATA[// Updates the internal epoch milliseconds of the time instance to the current system time in UTC format.
+METHOD Now : REFERENCE TO FB_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+VAR
+	eResult : FsError.E_CodesysCmpError;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Now REF= THIS^;
+
+// Get the current time instance as UTC.
+eResult := SysTimeRtc.SysTimeRtcHighResGet(THIS^._nEpochMilliseconds);
+CASE eResult OF
+	FsError.E_CodesysCmpError.ERR_OK:
+		SysTimeRtc.SysTimeRtcConvertHighResToDate(THIS^._nEpochMilliseconds, THIS^._Date);
+ELSE // Reset the time instance class if there's an error.
+	Error := 
+		FsError.F_CreateErrorFromStartRange(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_CODESYS_BEGIN,
+			eResult);
+	THIS^.FB_init(FALSE, FALSE);
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Second" Id="{59b40d1c-5d89-06ad-2653-2b8aac68b854}">
+      <Declaration><![CDATA[// The second of the minute extracted from the time instance.
+// [get] Returns the second component, with a value ranging from 0 to 59.
+PROPERTY Second : T_Second]]></Declaration>
+      <Get Name="Get" Id="{25a59e15-b6b3-0bc0-1fe3-38390475049f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Second := THIS^._Date.wSecond;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="ToDate" Id="{d572272b-a7aa-08b5-0c53-7ec2690a611f}">
+      <Declaration><![CDATA[// Converts the time instance to a date value.
+METHOD ToDate : DATE // The date part of the time instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToDate := TO_DATE(THIS^.ToDateTime(Error => Error));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToDateTime" Id="{4f912b94-33c5-05cd-0495-31634f7ea87d}">
+      <Declaration><![CDATA[// Converts the time instance to a combined date and time value.
+METHOD ToDateTime : DT // The combined date and time value as a DT (Date and Time).
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+VAR
+	nLocal : DWORD;
+	eResult : FsError.E_CodesysCmpError;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE THIS^._eKind OF
+	E_TimeInstanceKind.Local:
+		eResult := SysTimeRtc.SysTimeRtcConvertUtcToLocal(
+			TO_DWORD(THIS^._nEpochMilliseconds / 1000),
+			nLocal);
+	
+		ToDateTime := TO_DT(nLocal);
+		
+		IF eResult <> FsError.E_CodesysCmpError.ERR_OK THEN 
+			Error := 
+				FsError.F_CreateErrorFromStartRange(
+					FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+					FsError.E_GeneralErrorCode.ERR_CODESYS_BEGIN,
+					eResult);
+			END_IF
+		
+ELSE 
+	ToDateTime := TO_DT(THIS^._nEpochMilliseconds / 1000);
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToLocal" Id="{fc041b72-7528-0bf2-2775-d53fe075b280}">
+      <Declaration><![CDATA[// Converts the time instance to local time representation.
+METHOD ToLocal : I_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+VAR
+	eResult : FsError.E_CodesysCmpError;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToLocal := THIS^;
+
+IF THIS^._eKind = E_TimeInstanceKind.Local THEN RETURN; END_IF;
+
+eResult := SysTimeRtc.SysTimeRtcConvertHighResToLocal(THIS^._nEpochMilliseconds, THIS^._Date);
+CASE eResult OF
+	FsError.E_CodesysCmpError.ERR_OK:
+		THIS^._eKind := E_TimeInstanceKind.Local;
+ELSE
+	Error := 
+		FsError.F_CreateErrorFromStartRange(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_CODESYS_BEGIN,
+			eResult);
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToTimeOfDay" Id="{b154d6aa-ef4e-0f4d-2d55-601e4067cc63}">
+      <Declaration><![CDATA[// Converts the time instance to a time of day  value.
+METHOD ToTimeOfDay : TOD // The time of day part of the time instance.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToTimeOfDay := TO_TOD(
+	(THIS^._Date.wHour * TO_DWORD(TOD#01:00:00.000))
+	+
+	(THIS^._Date.wMinute * TO_DWORD(TOD#00:01:00.000))
+	+ 
+	(THIS^._Date.wSecond * TO_DWORD(TOD#00:00:01.000))
+	+ 
+	THIS^._Date.wMilliseconds);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ToUTC" Id="{284b9878-067f-0ffc-19c1-27df0a954c5d}">
+      <Declaration><![CDATA[// Converts the time instance to UTC time representation.
+METHOD ToUTC : I_TimeInstance // A reference to the current instance.
+VAR_OUTPUT
+	// Error code indicating the result of the operation.
+	Error : FsError.T_Error;
+END_VAR
+VAR
+	eResult : FsError.E_CodesysCmpError;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ToUTC := THIS^;
+
+IF THIS^._eKind = E_TimeInstanceKind.UTC THEN RETURN; END_IF;
+
+eResult := SysTimeRtc.SysTimeRtcConvertHighResToDate(THIS^._nEpochMilliseconds, THIS^._Date);
+CASE eResult OF
+	FsError.E_CodesysCmpError.ERR_OK:
+		THIS^._eKind := E_TimeInstanceKind.UTC;
+ELSE
+	Error := 
+		FsError.F_CreateErrorFromStartRange(
+			FsError.GVL_ErrorDescriptors.fbGeneralErrorCodes,
+			FsError.E_GeneralErrorCode.ERR_CODESYS_BEGIN,
+			eResult);
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Year" Id="{90baf8ce-ec87-0268-21c2-f6aa6f365dda}">
+      <Declaration><![CDATA[// The year extracted from the time instance.
+// [get] Returns the year as a 4 digit value.
+PROPERTY Year : T_Year]]></Declaration>
+      <Get Name="Get" Id="{c459bc70-ad56-0fea-34d6-c0f0cb921b1f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Year := THIS^._Date.wYear;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Microsecond" Id="{ab47ed8a-4cf7-0af2-2c99-0d03d137c69b}">
+    <Declaration><![CDATA[// Represents the microseconds of the current millisecond, ranging from 0 to 999.
+TYPE T_Microsecond : UINT(0..999); END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

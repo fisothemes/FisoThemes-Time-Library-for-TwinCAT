@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_IntervalTimer" Id="{225e1e93-0d50-42d8-9923-63aeb6ddd29e}">
+    <Declaration><![CDATA[// This interface defines the behaviour of an interval timer, a type of timing source
+// that operates based on a specified interval. It is intended to be used for periodic
+// actions or repeated timing events.
+INTERFACE I_IntervalTimer EXTENDS I_TimingSource
+]]></Declaration>
+    <Property Name="ElapsedTime" Id="{739424e1-597d-4142-9976-49732fe91099}">
+      <Declaration><![CDATA[// The elapsed time since the timer was started or last reset, showing how much time has passed within the current interval.
+// [get] Returns the elapsed time within the current interval.
+PROPERTY ElapsedTime  : LTIME]]></Declaration>
+      <Get Name="Get" Id="{c39bc036-d15d-42b1-8048-7dd977fd9e99}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="IntervalCount" Id="{69ff8348-9553-4d96-ba53-a592903a90f7}">
+      <Declaration><![CDATA[// The number of intervals that have elapsed since the timer was started or reset.
+// [get] Returns the number of elapsed intervals.
+PROPERTY IntervalCount : FsCommon.T_Size]]></Declaration>
+      <Get Name="Get" Id="{e35f7527-8fbb-4252-a6d6-86f668eae93d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="IntervalTime" Id="{69ec4c85-ca85-4387-baa5-8bc7c2e420ec}">
+      <Declaration><![CDATA[// The interval duration for the timer. It specifies how long the timer should wait between triggers.
+// [get] Returns the interval duration.
+// [set] Sets the interval duration.
+PROPERTY IntervalTime : LTIME]]></Declaration>
+      <Get Name="Get" Id="{a74e80c7-809d-4988-bf72-4fdfce2b7f59}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{da4cf8f3-c8f6-442a-9229-ea589bf18058}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="IsRunning" Id="{2ef0371a-ee12-4beb-90f3-869f43a48373}">
+      <Declaration><![CDATA[// Indicates whether the interval timer is currently running.
+// [get] Returns TRUE if the timer is running; otherwise, FALSE.
+PROPERTY IsRunning  : BOOL]]></Declaration>
+      <Get Name="Get" Id="{af8d5866-1674-47e0-aecc-5ab2a8d064c0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Run" Id="{2c6c1dac-7cdf-4c79-9c6c-07bc8e1e2033}">
+      <Declaration><![CDATA[// The method that must be called cyclically to run the interval timer.
+METHOD Run : I_IntervalTimer // Reference to the current instance of I_IntervalTimer.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetCallback" Id="{48a86fe7-4282-4b9b-9db1-7871b5a00756}">
+      <Declaration><![CDATA[// Sets the callback to be invoked when the interval has elapsed.
+METHOD SetCallback : I_IntervalTimer // Reference to the current instance of I_IntervalTimer.
+VAR_INPUT
+	// The callback that is invoked when the interval elapses.
+    ipCallback : I_TimeElapsedCallback;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Start" Id="{51fe5fa4-0c22-42ad-8b58-7c3b89105dd5}">
+      <Declaration><![CDATA[// Starts the interval timer, beginning the measurement of time intervals.
+METHOD Start : I_IntervalTimer // Reference to the current instance of I_IntervalTimer.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Stop" Id="{d089fd6a-3c79-4d4c-9637-6151976ba636}">
+      <Declaration><![CDATA[// Stops the interval timer, halting the measurement of time intervals.
+METHOD Stop : I_IntervalTimer // Reference to the current instance of I_IntervalTimer.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeSpanConversions" Id="{c9e0566c-f7f4-0284-1189-fb285bffe885}">
+    <Declaration><![CDATA[INTERFACE I_TimeSpanConversions
+]]></Declaration>
+    <Method Name="ToDays" Id="{5c75e9c3-e8af-0940-1aa8-b7930e311c22}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into days.
+METHOD ToDays : ULINT // The total number of days in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToHours" Id="{e1f7ea57-493e-0784-1ed0-8bdee7448705}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into hours.
+METHOD ToHours : ULINT // The total number of hours in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToMicroseconds" Id="{a469b6d9-f20a-0fbd-1991-ffff26eaae98}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into microseconds.
+METHOD ToMicroseconds : ULINT // The total number of microseconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToMilliseconds" Id="{247c5852-f991-082d-2538-f01d0ece2aa0}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into milliseconds.
+METHOD ToMilliseconds : ULINT // The total number of milliseconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToMinutes" Id="{4aee05cc-6553-0562-01fb-ec6c2d389694}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into minutes.
+METHOD ToMinutes : ULINT // The total number of minutes in the time span.
+VAR_INPUT
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="ToNanoseconds" Id="{ab38f017-7796-02d4-1089-090badd0b56c}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into nanoseconds.
+METHOD ToNanoseconds : ULINT // The total number of nanoseconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="ToSeconds" Id="{670de2a8-88b0-0762-32ca-ebede3078c65}">
+      <Declaration><![CDATA[// Converts the time span represented by the instance into seconds.
+METHOD ToSeconds : ULINT // The total number of seconds in the time span.
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

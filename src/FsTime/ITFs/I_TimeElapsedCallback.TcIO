@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_TimeElapsedCallback" Id="{c322cb0b-524d-4a18-97e8-72e6867f57fa}">
+    <Declaration><![CDATA[// This interface is designed to be implemented by objects that need to respond
+// to time elapsed events from timing sources such as timers or interval timers.
+INTERFACE I_TimeElapsedCallback EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="OnTimeElapsed" Id="{5b10d984-f3c0-497e-8e28-593745105ed1}">
+      <Declaration><![CDATA[// This method is called when the associated timing source reaches the elapsed time
+// threshold. Implementers should define the specific actions to be taken when
+// this event occurs.
+METHOD OnTimeElapsed
+VAR_INPUT
+    // An instance of the timing source representing the source of the elapsed time event.
+    // This instance can be queried for its specific type using the __QUERYINTERFACE
+    // function, allowing for tailored handling based on the source's type.
+	ipSource : I_TimingSource;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

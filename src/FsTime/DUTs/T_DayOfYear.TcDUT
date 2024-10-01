@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_DayOfYear" Id="{d5fafe2d-2344-0934-0907-37d454ac4481}">
+    <Declaration><![CDATA[// Represents the day of the year, ranging from 1 to 366, where 1 is January 1st,
+// and 365 or 366 is December 31st (accounts for leap years).
+TYPE T_DayOfYear : UINT(1..366); END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

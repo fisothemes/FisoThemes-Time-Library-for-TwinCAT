@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Stopwatch" Id="{929dffcf-71a3-4efe-adf8-2dcc46c84bab}">
+    <Declaration><![CDATA[// This interface defines the behaviour of a stopwatch, a type of timing source 
+// used to measure the elapsed time between the start and stop actions. It can
+// be cleared to reset the elapsed time and is useful for timing events,
+// measuring durations, or performance monitoring.
+INTERFACE I_Stopwatch EXTENDS I_TimingSource
+]]></Declaration>
+    <Method Name="Clear" Id="{d22b2e11-2c0f-459b-828c-b430a30d9346}">
+      <Declaration><![CDATA[// Clears the stopwatch, resetting the elapsed time to zero.
+METHOD Clear
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="ElapsedTime" Id="{58223e66-6c8f-4dc4-a262-2221f74c1c4d}">
+      <Declaration><![CDATA[// The elapsed time measured by the stopwatch since it was started.
+// [get] Returns the elapsed time.
+PROPERTY ElapsedTime  : LTIME]]></Declaration>
+      <Get Name="Get" Id="{6c02b00e-aedc-49fd-997f-c22f8c3378e4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="IsRunning" Id="{7c2b704e-7364-47dc-a532-fe111f9a98a0}">
+      <Declaration><![CDATA[// Indicates whether the stopwatch is currently running.
+// [get] Returns TRUE if the stopwatch is running; otherwise, FALSE.
+PROPERTY IsRunning  : BOOL]]></Declaration>
+      <Get Name="Get" Id="{43c50cf2-1b24-4139-b1fe-dd7fc8179ce1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Start" Id="{ade4cee3-7161-488b-ad4b-d79881acbdec}">
+      <Declaration><![CDATA[// Starts the stopwatch, beginning the measurement of elapsed time.
+METHOD Start
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Stop" Id="{fc64b532-35a4-43ff-95c0-43f64680b17b}">
+      <Declaration><![CDATA[// Stops the stopwatch, halting the measurement of elapsed time.
+METHOD Stop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
